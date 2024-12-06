@@ -10,6 +10,10 @@ import SwiftUI
 struct ContentView: View {
     @State var vin: String = ""
     @State var isValid: Bool = false
+    @State var isSearching: Bool = false
+    @State var vehicleInfo: VehicleInfo?
+    
+    @State private var searchError: VINSearchError?
     
     var body: some View {
         NavigationView {
@@ -27,23 +31,37 @@ struct ContentView: View {
                         onSubmit: searchAction
                     )
                     
-                    Button(action: searchAction) {
-                        Label("Search", systemImage: "magnifyingglass")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .disabled(!isValid)
+                    SearchButton(
+                        action: searchAction,
+                        label: isSearching ? "Searching..." : "Search",
+                        systemImage: isSearching ? "" : "magnifyingglass"
+                    )
+                    .disabled(!isValid || isSearching)
                     .buttonStyle(.borderedProminent)
                     .padding(.horizontal)
+                    .navigationTitle("VIN Search")
                     
-                    // EmptyView or VehicleInfoView or ErrorView
+                    if isSearching {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                    } else if let error = searchError {
+                        ErrorStateView(error: error)
+                    } else if let vehicleInfo {
+                        VehicleInfoView(info: vehicleInfo)
+                    } else {
+                        EmptyInfoStateView()
+                    }
                 }
             }
         }
-        .navigationTitle("VIN Search")
     }
     
     private func searchAction() {
-        // TODO
+        // TODO - Searching 
+        isSearching = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            isSearching = false
+        }
     }
 }
 

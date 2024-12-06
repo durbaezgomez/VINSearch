@@ -10,7 +10,6 @@ import Foundation
 enum VINSearchError: Error {
     case invalidURL
     case invalidVIN
-    case invalidResponse(Int)
     case decodingError(Error)
     case networkError(Error)
     case timeout
@@ -21,8 +20,6 @@ enum VINSearchError: Error {
             "Invalid URL"
         case .invalidVIN:
             "Invalid VIN"
-        case .invalidResponse:
-            "Invalid response"
         case .decodingError(let error):
             "Decoding error: \(error.localizedDescription)"
         case .networkError(let error):

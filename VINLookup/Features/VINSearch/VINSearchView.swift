@@ -21,15 +21,16 @@ struct VINSearchView: View {
                     submitLabel: .search
                 ),
                 validationRules: VINSearchValidation.allRules,
-                onSubmit: viewModel.searchVIN
+                onSubmit: viewModel.search,
+                onClear: viewModel.clearErrors
             )
             
             SearchButton(
-                action: viewModel.searchVIN,
+                action: viewModel.search,
                 label: viewModel.isSearching ? "Searching..." : "Search",
                 systemImage: viewModel.isSearching ? "" : "magnifyingglass"
             )
-            .disabled(!viewModel.isValid || viewModel.isSearching)
+            .disabled(viewModel.vin.isEmpty || !viewModel.isValid || viewModel.isSearching)
             .buttonStyle(.borderedProminent)
             .padding(.horizontal)
             .navigationTitle("VIN Search")

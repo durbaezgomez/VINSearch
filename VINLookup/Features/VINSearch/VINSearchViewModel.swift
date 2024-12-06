@@ -20,22 +20,7 @@ class VINSearchViewModel: ObservableObject {
     
     private let service = VINSearchService.shared
     
-    func searchVIN() {
-        isSearching = true
-        
-        Task { @MainActor in
-            do {
-                vehicleInfo = try await service.lookup(vin: vin)
-                isSearching = false
-            } catch let error as VINSearchError {
-                searchError = error
-            } catch {
-                searchError = .networkError(error)
-            }
-        }
-    }
-    
-    private func search() {
+    func search() {
         guard !vin.isEmpty else { return }
         
         isSearching = true
@@ -44,7 +29,7 @@ class VINSearchViewModel: ObservableObject {
         
         currentSearchTask?.cancel()
         
-        currentSearchTask = Task {
+        currentSearchTask = Task { @MainActor in
             Task {
                 try? await Task.sleep(for: .seconds(5))
                 if isSearching {
@@ -71,5 +56,9 @@ class VINSearchViewModel: ObservableObject {
         currentSearchTask?.cancel()
         isSearching = false
         searchError = .timeout
+    }
+    
+    func clearErrors() {
+        searchError = nil
     }
 }

@@ -35,10 +35,13 @@ class VINSearchService: NetworkService {
                 endpoint: APIConfig.Endpoint.lookup.rawValue,
                 params: params
             )
-        } catch is TimeoutError {
-            throw VINSearchError.timeout
-        } catch let urlError as URLError {
-            throw VINSearchError.networkError(urlError)
+        } catch let error as NetworkError {
+            switch error {
+            case .timeout: throw VINSearchError.timeout
+            case .badRequest: throw VINSearchError.invalidVIN
+            default:
+                throw VINSearchError.networkError(error)
+            }
         } catch let decodingError as DecodingError {
             throw VINSearchError.decodingError(decodingError)
         } catch {

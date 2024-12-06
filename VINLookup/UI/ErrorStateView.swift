@@ -22,7 +22,6 @@ struct ErrorStateView: View {
 #Preview {
     VStack(spacing: 10) {
         ErrorStateView(error: .invalidVIN)
-        ErrorStateView(error: .invalidResponse(1))
         ErrorStateView(error: .networkError(NSError(domain: "", code: 1)))
     }
 }

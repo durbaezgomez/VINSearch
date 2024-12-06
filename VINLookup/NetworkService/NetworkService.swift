@@ -62,12 +62,22 @@ class NetworkService {
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 logger.error("Invalid response type received")
-                throw URLError(.badServerResponse)
+                throw NetworkError.generic
+            }
+            
+            if (400...499).contains(httpResponse.statusCode) {
+                logger.error("Request failed with status code: \(httpResponse.statusCode)")
+                throw NetworkError.badRequest
+            }
+            
+            if (500...599).contains(httpResponse.statusCode) {
+                logger.error("Request failed with status code: \(httpResponse.statusCode)")
+                throw NetworkError.serverSide
             }
             
             guard (200...299).contains(httpResponse.statusCode) else {
                 logger.error("Request failed with status code: \(httpResponse.statusCode)")
-                throw URLError(.badServerResponse)
+                throw NetworkError.generic
             }
             
             do {
@@ -90,7 +100,7 @@ class NetworkService {
             
             group.addTask {
                 try await Task.sleep(nanoseconds: UInt64(timeout * 1_000_000_000))
-                throw TimeoutError()
+                throw NetworkError.timeout
             }
             
             let result = try await group.next()!

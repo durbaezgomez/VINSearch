@@ -26,6 +26,7 @@ struct InputField: View {
     let config: Config
     let validationRules: [ValidationRule]
     let onSubmit: (() -> Void)?
+    let onClear: (() -> Void)?
     
     @State private var errorMessage: String = ""
     @FocusState var isFocused: Bool
@@ -35,13 +36,15 @@ struct InputField: View {
         isValid: Binding<Bool>,
         config: Config,
         validationRules: [ValidationRule] = [],
-        onSubmit: (() -> Void)?
+        onSubmit: (() -> Void)?,
+        onClear: (() -> Void)?
     ) {
         self._text = text
         self._isValid = isValid
         self.config = config
         self.validationRules = validationRules
         self.onSubmit = onSubmit
+        self.onClear = onClear
     }
 
     var body: some View {
@@ -116,6 +119,7 @@ struct InputField: View {
         isFocused = false
         isValid = false
         errorMessage = ""
+        onClear?()
     }
 }
 
@@ -129,7 +133,8 @@ struct InputField: View {
             isValid: $isValid,
             config: .init(placeholder: "Enter text", textInputAutocapitalization: .characters),
             validationRules: VINSearchValidation.allRules,
-            onSubmit: {}
+            onSubmit: {},
+            onClear: {}
         )
     }
 }

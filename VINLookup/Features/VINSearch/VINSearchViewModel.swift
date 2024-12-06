@@ -37,6 +37,8 @@ class VINSearchViewModel: ObservableObject {
                 }
             }
             
+            SearchHistory.shared.add(vin)
+            
             do {
                 vehicleInfo = try await service.lookup(vin: vin)
             } catch let error as VINSearchError {
@@ -58,7 +60,10 @@ class VINSearchViewModel: ObservableObject {
         searchError = .timeout
     }
     
-    func clearErrors() {
+    func clearView() {
+        showCancelAlert = false
+        isSearching = false
         searchError = nil
+        vehicleInfo = nil
     }
 }

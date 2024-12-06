@@ -32,4 +32,4 @@ enum VINSearchValidation {
         message: "VIN must be \(Constants.maxVINLength) characters long."
     )
 }
- 
+

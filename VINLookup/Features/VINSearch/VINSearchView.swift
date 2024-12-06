@@ -22,7 +22,7 @@ struct VINSearchView: View {
                 ),
                 validationRules: VINSearchValidation.allRules,
                 onSubmit: viewModel.search,
-                onClear: viewModel.clearErrors
+                onClear: viewModel.clearView
             )
             
             SearchButton(
@@ -34,6 +34,13 @@ struct VINSearchView: View {
             .buttonStyle(.borderedProminent)
             .padding(.horizontal)
             .navigationTitle("VIN Search")
+            
+            if viewModel.vehicleInfo == nil && !viewModel.isSearching {
+                SearchHistoryView(
+                    selectedVIN: $viewModel.vin,
+                    onSelect: viewModel.search
+                )
+            }
             
             if viewModel.isSearching {
                 ProgressView()

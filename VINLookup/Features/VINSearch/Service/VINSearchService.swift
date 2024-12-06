@@ -14,13 +14,22 @@ protocol VINSearchServiceProtocol {
 
 class VINSearchService: NetworkService {
     static let shared = VINSearchService()
+    private let rateLimiter: RateLimiter
     
-    init() {
-        super.init()
+    private init() {
+        self.rateLimiter = RateLimiter(requestsPerMinute: 10)
     }
     
     func lookup(vin: String) async throws -> VehicleInfo {
-        try await lookupVIN(vin)
+        guard await rateLimiter.shouldAllowRequest() else {
+            if let waitTime = await rateLimiter.timeUntilNextAllowedRequest() {
+                throw VINSearchError.rateLimitExceeded(floor(waitTime))
+            }
+            
+            throw VINSearchError.rateLimitExceeded(60)
+        }
+        
+        return try await lookupVIN(vin)
     }
     
     private func lookupVIN(_ vin: String) async throws -> VehicleInfo {

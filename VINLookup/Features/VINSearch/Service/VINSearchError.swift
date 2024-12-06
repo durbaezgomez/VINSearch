@@ -13,6 +13,7 @@ enum VINSearchError: Error {
     case decodingError(Error)
     case networkError(Error)
     case timeout
+    case rateLimitExceeded(TimeInterval)
     
     var description: String {
         switch self {
@@ -26,6 +27,8 @@ enum VINSearchError: Error {
             "Network error: \(error.localizedDescription)"
         case .timeout:
             "Timeout error."
+        case .rateLimitExceeded(let seconds):
+            "Too many requests. Please try again in \(seconds) seconds."
         }
     }
 }

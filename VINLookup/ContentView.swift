@@ -8,14 +8,34 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var vin: String = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            ScrollView {
+                VStack {
+                    SearchField(
+                        text: $vin,
+                        placeholder: "Enter VIN",
+                        onSubmit: searchAction
+                    )
+                    
+                    Button(action: searchAction) {
+                        Label("Search", systemImage: "magnifyingglass")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.horizontal)
+                    
+                    // EmptyView or VehicleInfoView or ErrorView
+                }
+            }
         }
-        .padding()
+        .navigationTitle("VIN Search")
+    }
+    
+    private func searchAction() {
+        // TODO
     }
 }
 

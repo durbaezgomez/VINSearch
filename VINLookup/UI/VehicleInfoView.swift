@@ -21,15 +21,6 @@ struct VehicleInfoView: View {
                 
                 Divider()
                 
-                InfoRow(label: "Manufacturer", value: info.manufacturerValue)
-                    .opacity(info.manufacturer.map(info.isPremiumField) == true ? 0.6 : 1)
-                InfoRow(label: "Model", value: info.modelValue)
-                    .opacity(info.model.map(info.isPremiumField) == true ? 0.6 : 1)
-                InfoRow(label: "Class", value: info.vehicleClassValue)
-                    .opacity(info.vehicleClass.map(info.isPremiumField) == true ? 0.6 : 1)
-                
-                Divider()
-                
                 InfoRow(label: "Country", value: info.country)
                 InfoRow(label: "Region", value: info.region)
                 InfoRow(label: "WMI", value: info.wmi)
@@ -63,9 +54,6 @@ private struct InfoRow: View {
     let vehicleInfo1 = VehicleInfo(
         vin: "JH4KA7561PC008269",
         country: "Japan",
-        manufacturer: "Acura",
-        model: "Legend",
-        vehicleClass: "Sedan/Saloon",
         region: "Asia",
         wmi: "JH4",
         vds: "KA7561",
@@ -76,9 +64,6 @@ private struct InfoRow: View {
     let vehicleInfo2 = VehicleInfo(
         vin: "JH4KA7561PC008269",
         country: "Japan",
-        manufacturer: "Only available for premium subscribers.",
-        model: "Only available for premium subscribers.",
-        vehicleClass: "Only available for premium subscribers.",
         region: "Asia",
         wmi: "JH4",
         vds: "KA7561",

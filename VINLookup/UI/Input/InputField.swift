@@ -92,7 +92,6 @@ struct InputField: View {
             }
         }
         .padding(.horizontal)
-        .animation(.easeInOut, value: isValid)
     }
     
     private func validate() -> Bool {
@@ -121,13 +120,14 @@ struct InputField: View {
 }
 
 #Preview {
+    @Previewable @State var text: String = ""
     @Previewable @State var isValid: Bool = false
     
     VStack(spacing: 20) {
         InputField(
-            text: .constant(""),
+            text: $text,
             isValid: $isValid,
-            config: .init(placeholder: "Enter VIN"),
+            config: .init(placeholder: "Enter text", textInputAutocapitalization: .characters),
             validationRules: VINSearchValidation.allRules,
             onSubmit: {}
         )

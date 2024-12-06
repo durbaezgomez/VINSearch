@@ -14,22 +14,15 @@ struct ErrorStateView: View {
         ContentUnavailableView {
             Label("Error occured", systemImage: "exclamationmark.triangle")
         } description: {
-            Text(description)
-        }
-    }
-    
-    var description: String {
-        switch error {
-        case .invalidVIN:
-            return "Invalid VIN"
-        case .invalidResponse:
-            return "Invalid response"
-        case .networkError(let error):
-            return "Network error: \(error.localizedDescription)"
+            Text(error.description)
         }
     }
 }
 
 #Preview {
-    ErrorStateView(error: .invalidResponse)
+    VStack(spacing: 10) {
+        ErrorStateView(error: .invalidVIN)
+        ErrorStateView(error: .invalidResponse(1))
+        ErrorStateView(error: .networkError(NSError(domain: "", code: 1)))
+    }
 }

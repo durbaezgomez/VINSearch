@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ErrorStateView: View {
-    var errorMessage: String
+    let errorMessage: String
     
     var body: some View {
         ContentUnavailableView {

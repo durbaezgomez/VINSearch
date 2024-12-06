@@ -107,6 +107,7 @@ struct InputField: View {
             }
         }
         
+        isValid = true
         errorMessage = ""
         return true
     }

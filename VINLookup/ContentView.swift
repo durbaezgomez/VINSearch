@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack {
+                VStack(spacing: 15) {
                     InputField(
                         text: $vin,
                         isValid: $isValid,
@@ -31,6 +31,7 @@ struct ContentView: View {
                         Label("Search", systemImage: "magnifyingglass")
                             .frame(maxWidth: .infinity)
                     }
+                    .disabled(!isValid)
                     .buttonStyle(.borderedProminent)
                     .padding(.horizontal)
                     

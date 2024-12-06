@@ -8,27 +8,35 @@
 import Foundation
 import OSLog
 
-actor VINSearchService {
-    private let service: NetworkService
+protocol VINSearchServiceProtocol {
+    func lookup(vin: String) async throws -> VehicleInfo
+}
+
+class VINSearchService: NetworkService {
+    static let shared = VINSearchService()
     
-    private init(service networkingService: NetworkService = .shared) {
-        self.service = networkingService
+    init() {
+        super.init()
     }
     
-    func lookupVIN(_ vin: String) async throws -> VehicleInfo {
+    func lookup(vin: String) async throws -> VehicleInfo {
+        try await lookupVIN(vin)
+    }
+    
+    private func lookupVIN(_ vin: String) async throws -> VehicleInfo {
         guard let url = APIConfig.host else {
             throw VINSearchError.invalidURL
         }
         
         do {
             let params = ["vin": vin]
-            return try await service.performRequest(
+            return try await performRequest(
                 url: url,
                 endpoint: APIConfig.Endpoint.lookup.rawValue,
                 params: params
             )
         } catch is TimeoutError {
-            throw VINSearchError.timout
+            throw VINSearchError.timeout
         } catch let urlError as URLError {
             throw VINSearchError.networkError(urlError)
         } catch let decodingError as DecodingError {

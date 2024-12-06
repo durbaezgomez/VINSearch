@@ -45,5 +45,15 @@ struct VINSearchView: View {
                 EmptyInfoStateView()
             }
         }
+        .alert("Long Running Request", isPresented: $viewModel.showCancelAlert) {
+            Button("Keep Waiting", role: .cancel) {
+                // Continue waiting
+            }
+            Button("Cancel", role: .destructive) {
+                viewModel.cancelSearch()
+            }
+        } message: {
+            Text("This request is taking longer than usual. Would you like to cancel?")
+        }
     }
 }

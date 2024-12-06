@@ -8,18 +8,16 @@
 import Foundation
 import OSLog
 
-actor NetworkService {
+class NetworkService {
     enum APIMethod: String {
         case get = "GET"
     }
-    
-    static let shared = NetworkService()
     
     private let session: URLSession
     private let logger = Logger(subsystem: "VINLookup", category: "Network Service")
     private let timeout: TimeInterval = 10 // 10 seconds timeout
     
-    private init(session: URLSession = .shared) {
+    init(session: URLSession = .shared) {
         self.session = session
     }
     

@@ -13,7 +13,7 @@ enum VINSearchError: Error {
     case invalidResponse(Int)
     case decodingError(Error)
     case networkError(Error)
-    case timout
+    case timeout
     
     var description: String {
         switch self {
@@ -27,8 +27,8 @@ enum VINSearchError: Error {
             "Decoding error: \(error.localizedDescription)"
         case .networkError(let error):
             "Network error: \(error.localizedDescription)"
-        case .timout:
-            "Timout error."
+        case .timeout:
+            "Timeout error."
         }
     }
 }

@@ -47,10 +47,12 @@ struct VINSearchView: View {
                     .progressViewStyle(.circular)
             } else if let error = viewModel.searchError {
                 ErrorStateView(error: error)
-            } else if let info = viewModel.vehicleInfo {
-                VehicleInfoView(info: info)
-            } else {
+            } else if viewModel.vehicleInfo == nil {
                 EmptyInfoStateView()
+            } else if let info = viewModel.vehicleInfo {
+                NavigationLink(destination: VehicleInfoView(info: info)) {
+                    Text("See vehicle details")
+                }
             }
         }
         .alert("Long Running Request", isPresented: $viewModel.showCancelAlert) {

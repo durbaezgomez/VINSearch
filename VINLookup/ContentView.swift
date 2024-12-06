@@ -9,14 +9,21 @@ import SwiftUI
 
 struct ContentView: View {
     @State var vin: String = ""
+    @State var isValid: Bool = false
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
-                    SearchField(
+                    InputField(
                         text: $vin,
-                        placeholder: "Enter VIN",
+                        isValid: $isValid,
+                        config: .init(
+                            placeholder: "Enter VIN",
+                            textInputAutocapitalization: .characters,
+                            submitLabel: .search
+                        ),
+                        validationRules: VINSearchValidation.allRules,
                         onSubmit: searchAction
                     )
                     
